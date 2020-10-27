@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "host": "pgsql",
+  "port": 5432,
+  "username": "postgres",
+  "password": "allspace",
+  "database": "allspace",
+  "entities": [
+    "./src/app/entities/*.ts"
+  ],
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
+}
