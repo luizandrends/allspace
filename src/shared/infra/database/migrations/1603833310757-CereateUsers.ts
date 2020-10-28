@@ -24,12 +24,12 @@ export default class CereateUsers1603833310757 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'password',
+            name: 'cpf',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'cpf',
+            name: 'password',
             type: 'varchar',
             isNullable: false,
           },

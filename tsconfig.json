@@ -4,6 +4,11 @@
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@config/*": ["config/*"],
+      "@shared/*": ["shared/*"]
+    },
     "strict": true,
     "allowJs": true,
     "strictPropertyInitialization": false,
