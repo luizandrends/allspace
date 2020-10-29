@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 
@@ -14,7 +15,7 @@ class AuthenticateUserController {
       password,
     });
 
-    return response.json(authenticateUser);
+    return response.json(classToClass(authenticateUser));
   }
 }
 
