@@ -2,8 +2,10 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import UserController from '../controllers/CreateUserController';
+import AuthenticateUserController from '../controllers/AuthenticateUserController';
 
 const userController = new UserController();
+const authenticateUserController = new AuthenticateUserController();
 
 const userRouter = Router();
 
@@ -18,6 +20,17 @@ userRouter.post(
     },
   }),
   userController.create
+);
+
+userRouter.post(
+  '/authenticate',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    },
+  }),
+  authenticateUserController.create
 );
 
 export default userRouter;
