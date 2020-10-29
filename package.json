@@ -9,10 +9,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.8",
     "@types/express": "^4.17.8",
     "@types/hapi__joi": "^17.1.6",
     "@types/jest": "^26.0.15",
+    "bcryptjs": "^2.4.3",
     "celebrate": "^13.0.3",
     "class-transformer": "^0.3.1",
     "cors": "^2.8.5",

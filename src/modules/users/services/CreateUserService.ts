@@ -4,12 +4,16 @@ import AppError from '@shared/errors/AppError';
 import User from '../infra/database/entities/User';
 import IUserDTO from '../dtos/IUserDTO';
 import IUsersInterface from '../interfaces/IUsersInterface';
+import IHashProvider from '../providers/HashProvider/interfaces/IHashProvider';
 
 @injectable()
 class CreateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersInterface
+    private usersRepository: IUsersInterface,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute(userData: IUserDTO): Promise<User> {
@@ -22,11 +26,13 @@ class CreateUserService {
       throw new AppError('Email or cpf already in database', 400);
     }
 
+    const hashedPassword = await this.hashProvider.generateHash(password);
+
     const createUserData = {
       name,
       email,
       cpf,
-      password,
+      password: hashedPassword,
     };
 
     const user = await this.usersRepository.create(createUserData);
