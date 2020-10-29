@@ -1,3 +1,9 @@
 node_modules
+.vscode
+tmp/*
+!tmp/.gitkeep
 coverage
+digitalocean
+digitalocean.pub
 .env
+ormconfig.json
