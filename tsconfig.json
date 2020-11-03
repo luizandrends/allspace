@@ -7,7 +7,8 @@
     "paths": {
       "@modules/*": ["modules/*"],
       "@config/*": ["config/*"],
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      "@apis/*": ["apis/*"]
     },
     "strict": true,
     "allowJs": true,

@@ -7,3 +7,4 @@ digitalocean
 digitalocean.pub
 .env
 ormconfig.json
+.env.test
