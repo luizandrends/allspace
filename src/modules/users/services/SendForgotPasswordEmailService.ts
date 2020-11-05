@@ -1,9 +1,8 @@
 import { injectable, inject } from 'tsyringe';
+import path from 'path';
 
 import AppError from '@shared/errors/AppError';
-
-import queueApi from '@apis/queue';
-
+import IMailProvider from '@shared/infra/container/providers/MailProvider/interfaces/IMailProvider';
 import IUsersRepository from '../interfaces/IUsersInterface';
 import IUserTokensRepository from '../interfaces/IUserTokensInterface';
 
@@ -17,6 +16,9 @@ class SendForgotPasswordEmailService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
+    @inject('MailProvider')
+    private mailProvider: IMailProvider,
+
     @inject('UserTokensRepository')
     private userTokensRepository: IUserTokensRepository
   ) {}
@@ -27,13 +29,29 @@ class SendForgotPasswordEmailService {
     if (!user) {
       throw new AppError('User does not exists.');
     }
-    const { name } = user;
+
     const { token } = await this.userTokensRepository.generate(user.id);
 
-    await queueApi.post('/forgot/password', {
-      name,
-      email,
-      token,
+    const forgotPasswordTemplate = path.resolve(
+      __dirname,
+      '..',
+      'templates',
+      'forgot_password.hbs'
+    );
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[Allspace] Password recovery',
+      templateData: {
+        file: forgotPasswordTemplate,
+        variables: {
+          userName: user.name,
+          resetPasswordURL: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+        },
+      },
     });
   }
 }
