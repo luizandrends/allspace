@@ -8,3 +8,4 @@ digitalocean.pub
 .env
 ormconfig.json
 .env.test
+.DS_Store
