@@ -2,9 +2,10 @@ import { injectable, inject } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../interfaces/IUsersInterface';
-import IUserTokensRepository from '../interfaces/IUserTokensInterface';
+import IUsersInterface from '../interfaces/IUsersInterface';
+import IUserTokensInterface from '../interfaces/IUserTokensInterface';
 import IHashProvider from '../providers/HashProvider/interfaces/IHashProvider';
+import IBlacklistTokensInterface from '../interfaces/IBlacklistTokensInterface';
 
 interface IRequest {
   token: string;
@@ -15,16 +16,25 @@ interface IRequest {
 class ResetPasswordService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private usersRepository: IUsersInterface,
 
     @inject('UserTokensRepository')
-    private userTokensRepository: IUserTokensRepository,
+    private userTokensRepository: IUserTokensInterface,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+
+    @inject('TokensProvider')
+    private blacklistTokensRepository: IBlacklistTokensInterface
   ) {}
 
   public async execute({ token, password }: IRequest): Promise<void> {
+    const checkToken = await this.blacklistTokensRepository.findByToken(token);
+
+    if (checkToken) {
+      throw new AppError('Invalid token', 401);
+    }
+
     const userToken = await this.userTokensRepository.findByToken(token);
 
     if (!userToken) {
@@ -47,6 +57,8 @@ class ResetPasswordService {
     user.password = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.save(user);
+
+    await this.blacklistTokensRepository.create({ token });
   }
 }
 

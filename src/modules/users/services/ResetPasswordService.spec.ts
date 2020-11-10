@@ -2,11 +2,13 @@ import AppError from '@shared/errors/AppError';
 
 import FakeUsersRepository from '../interfaces/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../interfaces/fakes/FakeUserTokensRepository';
+import FakeBlacklistTokensRepository from '../interfaces/fakes/FakeBlacklistTokensRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import ResetPasswordService from './ResetPasswordService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokensRepository;
+let fakeBlacklistTokensRepository: FakeBlacklistTokensRepository;
 let fakeHashProvider: FakeHashProvider;
 let resetPassword: ResetPasswordService;
 
@@ -15,11 +17,13 @@ describe('ResetPasswordService', () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeUserTokensRepository = new FakeUserTokensRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeBlacklistTokensRepository = new FakeBlacklistTokensRepository();
 
     resetPassword = new ResetPasswordService(
       fakeUsersRepository,
       fakeUserTokensRepository,
-      fakeHashProvider
+      fakeHashProvider,
+      fakeBlacklistTokensRepository
     );
   });
 
@@ -34,15 +38,21 @@ describe('ResetPasswordService', () => {
     const { token } = await fakeUserTokensRepository.generate(user.id);
 
     const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
+    const createToken = jest.spyOn(fakeBlacklistTokensRepository, 'create');
 
     await resetPassword.execute({
       password: '123123',
       token,
     });
 
+    const createTokenPayload = {
+      token,
+    };
+
     const updatedUser = await fakeUsersRepository.findById(user.id);
 
     expect(generateHash).toHaveBeenCalledWith('123123');
+    expect(createToken).toHaveBeenCalledWith(createTokenPayload);
     expect(updatedUser?.password).toBe('123123');
   });
 
@@ -89,6 +99,26 @@ describe('ResetPasswordService', () => {
         password: '123123',
         token,
       })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password with an invalid token', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      cpf: '100.100.100-03',
+      password: '123456',
+    });
+
+    const { token } = await fakeUserTokensRepository.generate(user.id);
+
+    await resetPassword.execute({
+      password: '123123',
+      token,
+    });
+
+    await expect(
+      resetPassword.execute({ password: '123123', token })
     ).rejects.toBeInstanceOf(AppError);
   });
 });

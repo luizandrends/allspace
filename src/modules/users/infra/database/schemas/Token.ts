@@ -7,7 +7,7 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 
-@Entity('tokens')
+@Entity('blacklist')
 export default class Notification {
   @ObjectIdColumn()
   id: ObjectID;
