@@ -1,7 +1,7 @@
 import ITokenDTO from '../dtos/ITokenDTO';
-import Token from '../infra/database/schemas/Token';
+import Blacklist from '../infra/database/schemas/Blacklist';
 
 export default interface ITokensInterface {
-  create(payload: ITokenDTO): Promise<Token>;
-  findByToken(token: string): Promise<Token | undefined>;
+  create(payload: ITokenDTO): Promise<Blacklist>;
+  findByToken(token: string): Promise<Blacklist | undefined>;
 }
