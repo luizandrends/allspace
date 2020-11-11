@@ -7,8 +7,8 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 
-@Entity('blacklist')
-export default class Notification {
+@Entity('Blacklist')
+class Blacklist {
   @ObjectIdColumn()
   id: ObjectID;
 
@@ -21,3 +21,5 @@ export default class Notification {
   @UpdateDateColumn()
   updated_at: Date;
 }
+
+export default Blacklist;

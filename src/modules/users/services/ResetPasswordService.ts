@@ -24,7 +24,7 @@ class ResetPasswordService {
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
-    @inject('TokensProvider')
+    @inject('BlacklistTokensRepository')
     private blacklistTokensRepository: IBlacklistTokensInterface
   ) {}
 
@@ -56,9 +56,9 @@ class ResetPasswordService {
 
     user.password = await this.hashProvider.generateHash(password);
 
-    await this.usersRepository.save(user);
-
     await this.blacklistTokensRepository.create({ token });
+
+    await this.usersRepository.save(user);
   }
 }
 

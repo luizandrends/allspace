@@ -12,8 +12,9 @@ class BlacklistTokensRepository implements IBlacklistTokensInterface {
   }
 
   public async create(payload: ITokenDTO): Promise<Blacklist> {
-    const { token: usedToken } = payload;
-    const token = this.ormRepository.create({ token: usedToken });
+    const token = this.ormRepository.create({ token: payload.token });
+
+    await this.ormRepository.save(token);
 
     return token;
   }

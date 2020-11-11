@@ -27,7 +27,7 @@
     "database": "allspace",
     "authSource": "admin",
     "entities": [
-      "./src/modules/**/infra/schemas/*.ts"
+      "./src/modules/**/infra/database/schemas/*.ts"
     ]
   }
 ]
