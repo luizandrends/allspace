@@ -33,7 +33,10 @@ class FakeAdvertsRepository implements IAdvertsInterface {
     return findAdverts;
   }
 
-  public async removeStockQuantity(advert_id: string): Promise<Advert> {
+  public async removeStockQuantity(
+    advert_id: string,
+    quantity: number
+  ): Promise<Advert> {
     const findIndex = this.adverts.findIndex(
       findAdvert => findAdvert.id === advert_id
     );
@@ -42,12 +45,15 @@ class FakeAdvertsRepository implements IAdvertsInterface {
 
     const stockQuantity = advert.in_stock;
 
-    Object.assign(advert, { in_stock: stockQuantity - 1 });
+    Object.assign(advert, { in_stock: stockQuantity - quantity });
 
     return advert;
   }
 
-  public async increseStockQuantitiy(advert_id: string): Promise<Advert> {
+  public async increaseStockQuantitiy(
+    advert_id: string,
+    quantity: number
+  ): Promise<Advert> {
     const findIndex = this.adverts.findIndex(
       findAdvert => findAdvert.id === advert_id
     );
@@ -56,7 +62,7 @@ class FakeAdvertsRepository implements IAdvertsInterface {
 
     const stockQuantity = advert.in_stock;
 
-    Object.assign(advert, { in_stock: stockQuantity + 1 });
+    Object.assign(advert, { in_stock: stockQuantity + quantity });
 
     return advert;
   }
