@@ -17,4 +17,5 @@ export default interface IAdvertsInterface {
   searchAdverts(search_keyword: string): Promise<(Advert | undefined)[]>;
   removeStockQuantity(advert_id: string): Promise<Advert>;
   increseStockQuantitiy(advert_id: string): Promise<Advert>;
+  save(advert: Advert): Promise<Advert>;
 }
