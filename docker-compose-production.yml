@@ -5,6 +5,7 @@ volumes:
 services:
   pgsql:
     image: postgres
+    restart: unless-stopped
     ports:
       - '5432:5432'
     environment:
@@ -16,6 +17,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   mongo: #https://hub.docker.com/_/mongo
     image: mongo
+    restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: allspace
       MONGO_INITDB_ROOT_PASSWORD: allspace
@@ -24,6 +26,7 @@ services:
       - 27017:27017
   mongo-express:
     image: mongo-express
+    restart: unless-stopped
     ports:
       - 8081:8081
     links:
@@ -46,4 +49,4 @@ services:
     links:
       - pgsql
       - mongo
-    command: sh -c "yarn install && yarn build && ./node_modules/.bin/typeorm migration:run && node dist/shared/infra/http/server.js"
+    command: sh -c "yarn install && yarn build && ./node_modules/.bin/typeorm migration:run && pm2 start dist/shared/infra/http/server.js"
