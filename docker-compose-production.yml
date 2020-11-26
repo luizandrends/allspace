@@ -49,4 +49,4 @@ services:
     links:
       - pgsql
       - mongo
-    command: sh -c "yarn install && yarn build && ./node_modules/.bin/typeorm migration:run && pm2 start dist/shared/infra/http/server.js"
+    command: sh -c "yarn install && yarn build && ./node_modules/.bin/typeorm migration:run && pm2 start dist/shared/infra/http/server.js --name allspacebackend"
