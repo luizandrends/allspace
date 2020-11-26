@@ -2,11 +2,11 @@
   {
     "name": "default",
     "type": "postgres",
-    "host": "pgsql",
+    "host": "",
     "port": 5432,
-    "username": "postgres",
-    "password": "allspace",
-    "database": "allspace",
+    "username": "",
+    "password": "",
+    "database": "",
     "entities": [
       "./src/modules/**/infra/database/entities/*.ts"
     ],
@@ -19,13 +19,13 @@
   },
   {
     "name": "mongo",
-    "type": "mongodb",
-    "host": "mongo",
+    "type": "",
+    "host": "",
     "port": 27017,
-    "username": "allspace",
-    "password": "allspace",
-    "database": "allspace",
-    "authSource": "admin",
+    "username": "",
+    "password": "",
+    "database": "",
+    "authSource": "",
     "entities": [
       "./src/modules/**/infra/database/schemas/*.ts"
     ]
