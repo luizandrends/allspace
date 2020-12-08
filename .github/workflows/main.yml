@@ -52,10 +52,9 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~allspace/backend
-          yarn
+
           
-    - name: Running migrations on Digital Ocean
+    - name: Run production scripts
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -63,13 +62,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~allspace/backend
+          yarn
+          cd ~allspace/backend
           ./node_modules/.bin/typeorm migration:run
+          pm2 restart allspace-backend
           
-    - name: Running migrations on Digital Ocean
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        port: ${{ secrets.SSH_PORT }}
-        script: pm2 restart allspace-backend
         
