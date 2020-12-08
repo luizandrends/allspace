@@ -44,6 +44,9 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         source: ".,!node_modules"
         target: "~/allspace/backend"
+        
+    - name: Run tests
+      run: yarn test
           
     - name: Run production scripts
       uses: appleboy/ssh-action@master
