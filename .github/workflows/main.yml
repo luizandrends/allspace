@@ -55,7 +55,6 @@ jobs:
         script: |
           cd ~allspace/backend
           yarn
-          cd ~allspace/backend
           ./node_modules/.bin/typeorm migration:run
           pm2 restart allspace-backend
           
