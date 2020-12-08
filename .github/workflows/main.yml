@@ -52,10 +52,6 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd ~allspace/backend
-          yarn
-          ./node_modules/.bin/typeorm migration:run
-          pm2 restart allspace-backend
+        script: cd ~/allspace/backend && yarn && ./node_modules/.bin/typeorm migration:run && pm2 restart allspace-backend
           
         
