@@ -35,6 +35,51 @@ describe('AddInStock', () => {
     );
   });
 
+  it('should be to increase the advert stock number', async () => {
+    const userData = {
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      cpf: '100.100.100-10',
+      password: '123456',
+    };
+
+    const user = await createUserService.execute(userData);
+
+    const { id } = user;
+
+    const advertData = {
+      user_id: id,
+      name: 'Playstation 5',
+      price: 4500,
+      description: 'Sony videogame',
+      brand: 'Sony',
+      model: 'Playstation 5',
+      color: 'White',
+      in_stock: 40,
+    };
+
+    const advert = await createAdvertService.execute(advertData);
+
+    const increaseStock = await addStockQuantityService.execute({
+      advert_id: advert.id,
+      quantity: 2,
+    });
+
+    const expectedAdvert = {
+      id: increaseStock.id,
+      user_id: increaseStock.user_id,
+      name: 'Playstation 5',
+      price: 4500,
+      description: 'Sony videogame',
+      brand: 'Sony',
+      model: 'Playstation 5',
+      color: 'White',
+      in_stock: 42,
+    };
+
+    expect(increaseStock).toEqual(expectedAdvert);
+  });
+
   it('should not be able to increase an unexistent advert', async () => {
     await expect(
       addStockQuantityService.execute({
