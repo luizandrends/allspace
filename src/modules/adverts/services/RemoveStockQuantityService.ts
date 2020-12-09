@@ -18,7 +18,20 @@ class CreateAdvertService {
     private advertsRepository: IAdvertsInterface
   ) {}
 
-  public async execute({ advert_id, quantity }: IRequest): Promise<Advert> {}
+  public async execute({ advert_id, quantity }: IRequest): Promise<Advert> {
+    const findAdvert = await this.advertsRepository.findById(advert_id);
+
+    if (!findAdvert) {
+      throw new AppError('Unexistent advert', 401);
+    }
+
+    const removeStock = await this.advertsRepository.removeStockQuantity(
+      advert_id,
+      quantity
+    );
+
+    return removeStock;
+  }
 }
 
 export default CreateAdvertService;
