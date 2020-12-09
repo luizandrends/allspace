@@ -5,16 +5,16 @@ import AppError from '@shared/errors/AppError';
 import FakeAdvertsRepository from '../interfaces/fakes/FakeAdvertsRepository';
 
 import CreateAdvertService from './CreateAdvertService';
-import AddStockQuantityService from './AddStockQuantityService';
+import RemoveStockQuantityService from './RemoveStockQuantityService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeAdvertsRepository: FakeAdvertsRepository;
 let fakeHashProvider: FakeHashProvider;
 let createAdvertService: CreateAdvertService;
 let createUserService: CreateUserService;
-let addStockQuantityService: AddStockQuantityService;
+let removeStockQuantityService: RemoveStockQuantityService;
 
-describe('AddInStock', () => {
+describe('RemoveStockQuantity', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeAdvertsRepository = new FakeAdvertsRepository();
@@ -30,12 +30,12 @@ describe('AddInStock', () => {
       fakeAdvertsRepository
     );
 
-    addStockQuantityService = new AddStockQuantityService(
+    removeStockQuantityService = new RemoveStockQuantityService(
       fakeAdvertsRepository
     );
   });
 
-  it('should be able to increase the advert stock number', async () => {
+  it('should be able to remove the advert stock number', async () => {
     const userData = {
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -60,7 +60,7 @@ describe('AddInStock', () => {
 
     const advert = await createAdvertService.execute(advertData);
 
-    const increaseStock = await addStockQuantityService.execute({
+    const increaseStock = await removeStockQuantityService.execute({
       advert_id: advert.id,
       quantity: 2,
     });
@@ -74,15 +74,15 @@ describe('AddInStock', () => {
       brand: 'Sony',
       model: 'Playstation 5',
       color: 'White',
-      in_stock: 42,
+      in_stock: 38,
     };
 
     expect(increaseStock).toEqual(expectedAdvert);
   });
 
-  it('should not be able to increase the stock number of a unexistent advert', async () => {
+  it('should not be able to remove the stocknumber of a unexistent advert', async () => {
     await expect(
-      addStockQuantityService.execute({
+      removeStockQuantityService.execute({
         advert_id: 'd85cb127-3d02-4b6d-9e5b-cd349259e438',
         quantity: 2,
       })
