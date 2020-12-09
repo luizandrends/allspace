@@ -35,7 +35,7 @@ describe('RemoveStockQuantity', () => {
     );
   });
 
-  it('should be to increase the advert stock number', async () => {
+  it('should be able to remove the advert stock number', async () => {
     const userData = {
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -80,7 +80,7 @@ describe('RemoveStockQuantity', () => {
     expect(increaseStock).toEqual(expectedAdvert);
   });
 
-  it('should not be able to increase an unexistent advert', async () => {
+  it('should not be able to remove the stocknumber of a unexistent advert', async () => {
     await expect(
       removeStockQuantityService.execute({
         advert_id: 'd85cb127-3d02-4b6d-9e5b-cd349259e438',
