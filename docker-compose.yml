@@ -46,4 +46,4 @@ services:
     links:
       - pgsql
       - mongo
-    command: sh -c "yarn install && yarn build && yarn typeorm migration:run && yarn dev:server"
+    command: sh -c "yarn install && yarn typeorm migration:run && yarn dev:server"
