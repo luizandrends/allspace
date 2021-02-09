@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import User from '@modules/users/infra/database/entities/User';
 import IUsersInterface from '../IUsersInterface';
@@ -10,7 +10,7 @@ class FakeUsersRepository implements IUsersInterface {
   public async create(userData: IUserDTO): Promise<User> {
     const user = new User();
 
-    Object.assign(user, { id: uuid() }, userData);
+    Object.assign(user, { id: v4() }, userData);
 
     this.users.push(user);
 

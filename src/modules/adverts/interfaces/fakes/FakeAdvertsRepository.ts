@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import Advert from '@modules/adverts/infra/database/entities/Advert';
 import IAdvertsInterface from '../IAdvertsInterface';
@@ -10,7 +10,7 @@ class FakeAdvertsRepository implements IAdvertsInterface {
   public async create(advertData: IAdvertDTO): Promise<Advert> {
     const advert = new Advert();
 
-    Object.assign(advert, { id: uuid() }, advertData);
+    Object.assign(advert, { id: v4() }, advertData);
 
     this.adverts.push(advert);
 
